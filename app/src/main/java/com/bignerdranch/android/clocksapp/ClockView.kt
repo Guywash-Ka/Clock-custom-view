@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import java.util.*
+import kotlin.math.min
 
 
 class ClockView @JvmOverloads constructor(
@@ -17,13 +18,16 @@ class ClockView @JvmOverloads constructor(
     private lateinit var calendar: Calendar
     private var angle = 0f
     private var matr = Matrix()
+    private var side = 0
+
 
 
     override fun onDraw(canvas: Canvas) {
+        side = min(width, height)
         canvas.drawColor(Color.BLACK)
         drawClocks(canvas)
         drawHands(canvas)
-        postInvalidateDelayed(100)
+        postInvalidateDelayed(500)
         invalidate()
     }
 
@@ -34,16 +38,19 @@ class ClockView @JvmOverloads constructor(
             Calendar.MINUTE -> BitmapFactory.decodeResource(resources, R.drawable.minute_hand)
             else -> BitmapFactory.decodeResource(resources, R.drawable.hour_hand)
         }
-
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, width, false)
+        if (type == Calendar.HOUR) {
+            angle = (Math.PI * time / 6).toFloat()
+        }
+        bitmap = Bitmap.createScaledBitmap(bitmap, side, side, false)
         bitmap = rotateBitmap(bitmap, angle * 57.29f + 90)
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, width, false)
-        canvas.drawBitmap(bitmap, (0).toFloat(), (0).toFloat(), paint)
+        bitmap = Bitmap.createScaledBitmap(bitmap, side, side, false)
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
 
     }
 
     private fun drawHands(canvas: Canvas) {
         calendar = Calendar.getInstance()
+
         drawHand(canvas, (calendar[Calendar.HOUR] % 12).toFloat(), Calendar.HOUR)
         drawHand(canvas, calendar[Calendar.MINUTE].toFloat(), Calendar.MINUTE)
         drawHand(canvas, calendar[Calendar.SECOND].toFloat(), Calendar.SECOND)
@@ -51,14 +58,14 @@ class ClockView @JvmOverloads constructor(
 
     private fun drawClocks(canvas: Canvas) {
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.clocks)
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false)
+        bitmap = Bitmap.createScaledBitmap(bitmap, side, side, false)
 
         canvas.drawBitmap(bitmap, 0f, 0f, paint)
     }
 
     private fun rotateBitmap(source: Bitmap, degrees: Float): Bitmap {
         matr = Matrix()
-        matr.setRotate(degrees, (width/2).toFloat(), (width/2).toFloat())
+        matr.setRotate(degrees, (side/2).toFloat(), (side/2).toFloat())
         return Bitmap.createBitmap(
             source, 0, 0, source.width, source.width, matr, true
         )
