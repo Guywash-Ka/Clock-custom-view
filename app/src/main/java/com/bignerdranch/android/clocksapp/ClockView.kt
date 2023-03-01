@@ -62,7 +62,6 @@ class ClockView @JvmOverloads constructor(
 
         canvas.drawBitmap(bitmap, 0f, 0f, paint)
     }
-cd andr
     private fun rotateBitmap(source: Bitmap, degrees: Float): Bitmap {
         matr = Matrix()
         matr.setRotate(degrees, (side/2).toFloat(), (side/2).toFloat())
