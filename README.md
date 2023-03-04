@@ -1,6 +1,7 @@
 # Clocks custom view
 
-![xjwGklwTRf](https://user-images.githubusercontent.com/57402279/222096287-99246288-72e3-4a0a-a4d3-ea88a3f72b59.gif)
+![hSCcra63Wl](https://user-images.githubusercontent.com/57402279/222929047-a5cb1250-3311-4194-86ee-1619e207d892.gif)
+
 
 The view is a **real-time clock**.
 
